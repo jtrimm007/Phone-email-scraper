@@ -11,6 +11,7 @@
  */
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
@@ -33,8 +34,21 @@ public class DatabaseConnection
     {
     	getConnection();
     	
+    	String urlTest = "leinbachservices.com";
+    	String emails = "jim@leinbachservices.com, marketing@leinbachservices.com";
+    	
     	try {
-			selectAll("backlinqs_users");
+    		selectAllFromScrap();
+    		
+    		
+    		ArrayList<String> urls = selectAllUrls();
+    		
+    		insertUrlAndEmails(urlTest, emails);
+    		
+    		for(String each : urls)
+    		{
+    			System.out.println(each);
+    		}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -72,7 +86,68 @@ public class DatabaseConnection
     	return rs;
     }
     
-    public static void selectAll(String table) throws SQLException
+    public static ArrayList<String> insertUrlAndEmails(String url, String email) throws SQLException
+    {
+    	ArrayList<String> urls = new ArrayList<String>();
+    	
+    	ResultSet rs = using();
+    	
+
+    	try {
+        	
+    		
+    		String query = "INSERT INTO `backlinqs_scrap` (`url`, `email`) VALUES(\"" + url + "\", \"" + email + "\")";
+        	
+        	PreparedStatement stmt = con.prepareStatement(query);
+        	
+        	stmt.execute();
+                	
+        	rs.close();
+        	stmt.close();
+        	con.close();
+    	} catch(Exception i)
+    	{
+    		i.printStackTrace();
+    	}
+    	
+    	return urls;
+    }
+    
+    public static ArrayList<String> selectAllUrls() throws SQLException
+    {
+    	ArrayList<String> urls = new ArrayList<String>();
+    	
+    	ResultSet rs = using();
+    	
+
+    	try {
+        	
+        	Statement stmt = con.createStatement();
+        	
+        	
+        	
+        	rs = stmt.executeQuery("SELECT * FROM `backlinqs_scrap`");
+        	
+
+        	while(rs.next())
+        	{
+        		String url = rs.getString("url");
+        		urls.add(url);
+           	}
+ 
+                	
+        	rs.close();
+        	stmt.close();
+        	con.close();
+    	} catch(Exception i)
+    	{
+    		i.printStackTrace();
+    	}
+    	
+    	return urls;
+    }
+    
+    public static void selectAllFromScrap() throws SQLException
     {
     	
     	
@@ -85,14 +160,18 @@ public class DatabaseConnection
         	
         	
         	
-        	rs = stmt.executeQuery("SELECT * FROM `" + table + "`");
+        	rs = stmt.executeQuery("SELECT * FROM `backlinqs_scrap`");
         	
 
         	while(rs.next())
         	{
-        		String firstName = rs.getString(2);
-        	
-                System.out.println(	firstName);
+        		String url = rs.getString("url");
+        		String email = rs.getString("email");
+
+                System.out.println(	url + " " + email);
+                
+
+
         	}
  
             System.out.println(	rs.first());

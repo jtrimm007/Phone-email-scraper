@@ -72,7 +72,7 @@ public class GoogleCrawler
 	{
 
 		Set<String> result = new HashSet<String>();
-		String request = "https://www.google.com/search?q=" + query + "&num=100";
+		String request = "https://www.google.com/search?q=" + query + "&num=20";
 		System.out.println("Sending request..." + request);
 
 		try
@@ -124,11 +124,17 @@ public class GoogleCrawler
 		     while (matcher.find()) {
 		        emails.add(matcher.group());
 		     }
-		     
+		     int oneEmail = 0;
 		     for(String each : emails)
 		     {
-		    	 //System.out.print(each);
-		    	 emailAddresses.add(each);
+		    	 
+		    	 if(oneEmail < 1)
+		    	 {
+		    		 oneEmail++;
+			    	 //System.out.print(each);
+			    	 emailAddresses.add(each); 
+		    	 }
+
 		     }
 		     return emailAddresses;
 

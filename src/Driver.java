@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -21,36 +22,30 @@ import java.util.Set;
  * <hr>
  * Date created: Jul 1, 2019
  * <hr>
+ * 
  * @author Joshua Trimm
  */
-public class Driver
-{
+public class Driver {
 
 	/**
-	 * Method description: 
-	 * Date: Jul 1, 2019
+	 * Method description: Date: Jul 1, 2019
+	 * 
 	 * @param args
 	 * @return void
+	 * @throws SQLException
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
 
-		
-		HashMap<String, ArrayList<String>> list = functions.searchAndScrap("hvac+johnson+city+tn");
+		HashMap<String, ArrayList<String>> list = functions.searchAndScrap("hvac+bristol+tn");
 		System.out.println(list);
 
+		Set<Entry<String, ArrayList<String>>> company = list.entrySet();
 
-		Set<Entry<String, ArrayList<String>>> test = list.entrySet();
+		System.out.println(company);
 		
-		System.out.println(test);
+		functions.checkDataAndInsert(company);
 
-		
-		
-		
-		
-		
 
 	}
-
 }

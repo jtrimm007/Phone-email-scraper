@@ -110,7 +110,7 @@ public class GoogleCrawler
 	    ArrayList<String> emailAddresses = new ArrayList<String>();
 		
 		try {
-			System.out.println(website);
+			//System.out.println(website);
 	         // Here we create a document object and use JSoup to fetch the website
 	         Document doc = Jsoup.connect("https://" + website).get();
 	         
@@ -127,7 +127,7 @@ public class GoogleCrawler
 		     
 		     for(String each : emails)
 		     {
-		    	 System.out.print(each);
+		    	 //System.out.print(each);
 		    	 emailAddresses.add(each);
 		     }
 		     return emailAddresses;
@@ -141,6 +141,48 @@ public class GoogleCrawler
 	         e.printStackTrace();
 	       }
 		return emailAddresses;
+
+	}
+	
+	public ArrayList<String> getPhoneFromWebsite(String website)
+	{
+	    ArrayList<String> phoneNumbers = new ArrayList<String>();
+		
+		try {
+			//System.out.println(website);
+	         // Here we create a document object and use JSoup to fetch the website
+	         Document doc = Jsoup.connect("https://" + website).get();
+	         
+
+	         // With the document fetched, we use JSoup's title() method to fetch the title
+	         //System.out.printf("Title: %s\n", doc.title());
+	         
+		     Pattern p = Pattern.compile("^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$");
+		     
+		     Matcher matcher = p.matcher(doc.text());
+		     
+		     Set<String> numbers = new HashSet<String>();
+		     
+		     while (matcher.find()) {
+		    	 numbers.add(matcher.group());
+		     }
+		     
+		     for(String each : numbers)
+		     {
+		    	 System.out.print(each);
+		    	 phoneNumbers.add(each);
+		     }
+		     return phoneNumbers;
+
+	       // In case of any IO errors, we want the messages written to the console
+	       } catch (IllegalArgumentException e) {
+	            e.printStackTrace();
+	        }catch (MalformedURLException e) {
+	            e.printStackTrace();
+	        } catch (IOException e) {
+	         e.printStackTrace();
+	       }
+		return phoneNumbers;
 
 	}
 

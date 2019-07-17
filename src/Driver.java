@@ -1,5 +1,8 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * -------------------------------------------------
@@ -32,19 +35,20 @@ public class Driver
 	public static void main(String[] args)
 	{
 		// TODO Auto-generated method stub
-		GoogleCrawler test = new GoogleCrawler("hvac+company");
-		
-		for(String url : test.urls)
-		{
-			System.out.println(url);
-			ArrayList<String> emailAddresses = test.getEmailFromWebsite(url);
-			for(String email : emailAddresses)
-			{
-				System.out.println(email);
-			}
 
-	
-		}
+		
+		HashMap<String, ArrayList<String>> list = functions.searchAndScrap("hvac+johnson+city+tn");
+		System.out.println(list);
+
+
+		Set<Entry<String, ArrayList<String>>> test = list.entrySet();
+		
+		System.out.println(test);
+
+		
+		
+		
+		
 		
 
 	}

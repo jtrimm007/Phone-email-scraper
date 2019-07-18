@@ -13,6 +13,7 @@
 import java.sql.*;
 import java.util.ArrayList;
 
+import com.mysql.jdbc.exceptions.MySQLNonTransientConnectionException;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 /**
@@ -30,7 +31,7 @@ public class DatabaseConnection
     private static Connection con;
     
     
-    public static void main(String[] args)
+    public static void main(String[] args) throws MySQLNonTransientConnectionException
     {
     	getConnection();
     	
@@ -59,7 +60,7 @@ public class DatabaseConnection
     }
     	
     	
-    public static Connection getConnection() {
+    public static Connection getConnection() throws MySQLNonTransientConnectionException {
     	
         MysqlDataSource dataSource = new MysqlDataSource();
 		dataSource.setUser(Config.username);

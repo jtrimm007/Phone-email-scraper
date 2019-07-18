@@ -1,7 +1,11 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -33,18 +37,45 @@ public class Driver {
 	 * @param args
 	 * @return void
 	 * @throws SQLException
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) throws SQLException {
+	public static void main(String[] args) throws SQLException, IOException {
 		// TODO Auto-generated method stub
 
-		HashMap<String, ArrayList<String>> list = functions.searchAndScrap("hvac+bristol+tn");
-		System.out.println(list);
-
-		Set<Entry<String, ArrayList<String>>> company = list.entrySet();
-
-		System.out.println(company);
+		List<List<String>> cityList = functions.getCitiesFromCsv();
 		
-		functions.checkDataAndInsert(company);
+		for(List<String> each : cityList)
+		{
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append(each);
+			
+			String location = sb.toString();
+			location = location.replace("[", "");
+			location = location.replace("]", "");
+			location = location.replace(", ", "+");
+			location = location.replace(" ", "+");
+
+					
+			
+			HashMap<String, ArrayList<String>> list = functions.searchAndScrap("hvac+" + location);
+			System.out.println(list);
+
+			Set<Entry<String, ArrayList<String>>> company = list.entrySet();
+
+			System.out.println(company);
+			
+			functions.checkDataAndInsert(company);
+		}
+		
+//		HashMap<String, ArrayList<String>> list = functions.searchAndScrap("seo+tennessee");
+//		System.out.println(list);
+//
+//		Set<Entry<String, ArrayList<String>>> company = list.entrySet();
+//
+//		System.out.println(company);
+//		
+//		functions.checkDataAndInsert(company);
 
 
 	}

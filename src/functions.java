@@ -1,6 +1,12 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -14,14 +20,33 @@ import java.util.Map.Entry;
  */
 public class functions {
 
+	public static String city;
+	private static String[] exclude = new String[] { "quora", "youtube", "amazon", "google", "gov", "app", "homedepot",
+			"lowes", "walmart", "indeed", "angieslist", "yelp", "yellowpages", "manta", "porch", "zillow", "YP",
+			"tripadvisor", "yellowbook", "dexknows", "airbnb", "bbb" };
+	private static List<String> list = Arrays.asList(exclude);
+
+	public static List<List<String>> getCitiesFromCsv() throws FileNotFoundException, IOException {
+		List<List<String>> records = new ArrayList<>();
+		try (BufferedReader br = new BufferedReader(new FileReader(
+				"C:\\Users\\Joshua\\Dropbox (Personal)\\BackLinqs\\Scraper\\Phone email scraper\\src\\cities.csv"))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				String[] values = line.split(",");
+				records.add(Arrays.asList(values));
+			}
+
+			return records;
+		}
+	}
+
 	public static boolean checkForDuplication(String url) {
 		try {
 			ArrayList<String> urlsInDatabase = DatabaseConnection.selectAllUrls();
 
-			if (!urlsInDatabase.contains(url)) 
-			{
+			if (!urlsInDatabase.contains(url)) {
 				return false;
-			} 
+			}
 
 		} catch (Exception i)
 
@@ -36,9 +61,8 @@ public class functions {
 
 		DatabaseConnection.insertUrlAndEmails(url, email);
 	}
-	
-	public static void checkDataAndInsert(Set<Entry<String, ArrayList<String>>> company) throws SQLException
-	{
+
+	public static void checkDataAndInsert(Set<Entry<String, ArrayList<String>>> company) throws SQLException {
 		for (Entry<String, ArrayList<String>> each : company) {
 			System.out.println(each.getKey());
 			System.out.println(each.getValue());
@@ -63,6 +87,7 @@ public class functions {
 		GoogleCrawler test = new GoogleCrawler(searchCred);
 
 		for (String url : test.urls) {
+
 			System.out.println("Crawling: " + url);
 			ArrayList<String> emailAddresses = test.getEmailFromWebsite(url);
 
@@ -81,8 +106,9 @@ public class functions {
 				companyObject.put(url, companyEmail);
 
 			}
-
 		}
+
 		return companyObject;
 	}
+
 }

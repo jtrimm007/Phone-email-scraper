@@ -67,15 +67,7 @@ public class Driver {
 			
 			functions.checkDataAndInsert(company);
 		}
-		
-//		HashMap<String, ArrayList<String>> list = functions.searchAndScrap("seo+tennessee");
-//		System.out.println(list);
-//
-//		Set<Entry<String, ArrayList<String>>> company = list.entrySet();
-//
-//		System.out.println(company);
-//		
-//		functions.checkDataAndInsert(company);
+	
 
 
 	}
